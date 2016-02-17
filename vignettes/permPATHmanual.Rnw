@@ -1,0 +1,244 @@
+% \VignetteIndexEntry{permPATH manual}
+% \VignetteDepends{permPATH}
+% \VignetteKeywords{Gene Expression Analysis}
+% \VignettePackage{permPATH}
+% \VignetteEngine{knitr::knitr}
+
+\documentclass[11pt, a4paper]{article}
+
+ \setlength{\topmargin}{-0.2in}
+ \setlength{\oddsidemargin}{0.05 in}
+ \setlength{\textwidth}{6in}
+ \setlength{\textheight}{9in}
+ \headsep=0in
+ \oddsidemargin=0in \evensidemargin=0in
+
+
+\title{\texttt{permPATH}: Permutation-Based Gene Expression Pathway Analyses}
+
+\author{Ivo D. Shterev \thanks{i.shterev@duke.edu} \and Kouros Owzar \and Gregory D. Sempowski}
+
+
+\begin{document}
+
+\maketitle 
+
+\section{Introduction}
+This vignette describes the first version of the R extension package \texttt{permPATH} for performing permutation-based gene expression pathway analyses. The package works by computing a score for each group (pathway) of genes. The score is a function of the individual gene test statistics involved in the pathway. Currently, the package computes as the score the mean of the test statistics, the mean of the absolute values of the test statistics and the so called maxmean score \cite{efron}. The individual test statistics that the package currently supports are the {\it t}-test statistic, the Wilcoxon, Pearson, the Spearman and the Jonckheere-Terpstra (JT) test statistics.
+
+\section{Adjusting for Multiple Comparisons}
+In addition to computing individual test statistics and scores, the package also computes raw permutation p-values, false discovery (FDR) adjusted p-values, Bonferroni corrected p-values, as well as family wise error (FWER) adjusted two sided permutation p-values.
+
+\section{Data Format}
+The R packahe \texttt{permPATH} assumes that the gene expression data is in the form of a \texttt{K}$\times$\texttt{n} matrix, where \texttt{K} is the number of genes and \texttt{n} is the number of samples. The row names of the data frame should be the gene symbols. The phenotype data should be in the form of a vector of length \texttt{n}. The user also needs to provide a list of pre-defined pathways with each list element containing the gene symbols associated with the pathway. The name of each list element should be the pathway name.
+
+\section{Input Parameters}
+The code requires that the user also specifies the type of local test statistic for each gene, the global test statistic used to compute the score and the number of random permutations. The user can specify the minimum number of genes that a pathway should contain, thus filtering out pathways with smaller number of genes. Likewise, the user can specify the maximum number of genes that a pathway should contain, thus filtering out pathways with larger number of genes. In case of missing values, the user can specify a value that can be imputed in the gene expression data. The package also allows for the user to specify a transformation to be applied to the gene expression data prior to the analysis.
+
+\section{Output}
+The output of \texttt{permPATH} is in the form of a list with the following elements:
+\begin{itemize}
+\item \texttt{res}: Data frame consisting of the pathway names (Pathway), the genes 
+involved in each pathway (Genes), the number of genes in each pathway (Size), 
+the score for each pathway (Score), the permutation raw p-value (pval), 
+the FWER-adjusted permutation p-value (pfwer), the FDR-adjusted permutation p-value, 
+the Bonferroni-adjusted permutation p-value (bonferroni). If specified by the user, annotation (anno) 
+for each pathway.
+\item \texttt{stats}: The individual test statistic for each gene.
+\item \texttt{scores}: A matrix of scores. The matrix is of dimension \texttt{(B+1)}$\times$\texttt{M}, 
+where \texttt{M} is the number of pathways. The first column contains the unpermuted scores, 
+the remaining \texttt{B} columns contain the scores computed after each permutation.
+\end{itemize}
+The results can be sorted according to decreasing order of absolute score values or according to increasing order of raw p-values. This can be specified by the user.
+
+\section{Examples}
+\subsection{Synthetic Data}
+In this section we demonstrate the use of \texttt{permPATH} on synthetically generated data.
+
+\tiny
+<<echo=TRUE>>=
+# Generate toy phenotype and gene expression data sets
+# This example consists of 40 genes grouped into 5 pathways and 100 patients
+# grp is a binary trait (e.g., case vs control)
+# bp is a continuous trait (e.g., blood pressure)
+set.seed(1234)
+library(permPATH)
+
+n = 100
+K = 40
+grp = rep(1:0,each=n/2)
+bp = rnorm(n)
+
+pdat = data.frame(grp, bp)
+rm(grp, bp)
+expdat = matrix(rnorm(K*n),K,n)
+
+## Assign marker names g1,...,gK to the expression data set and
+## patient ids id1,...,idn to the expression and phenotype data
+gnames = paste("g",1:K,sep="")
+rownames(expdat) = gnames
+patid = paste("id",1:n,sep="")
+rownames(pdat) = patid
+colnames(expdat) = patid
+
+# Group the K genes into M pathways of sizes n1,...,nM
+M = 5
+p = runif(M)
+p = p/sum(p)
+nM = rmultinom(1, size=K, prob=p)
+gset = lapply(nM, function(x){gnames[sample(x)]})
+names(gset) = paste("pathway",1:M,sep="")
+names(gset)
+
+# Carry out permutation analysis with grp as the outcome
+# using the two-sample Wilcoxon test with B=100 random permutations.
+# The score is the maxmean test statistic
+res = perm.path(expdat, y=pdat[["grp"]], local.test="wilcoxon", 
+            global.test="maxmean", B=100, gset=gset, min.num=2, 
+            max.num=50, sort="score")
+
+# Output results for top pathways
+head(res[["res"]])
+
+# Output individual test statistics
+res[["stats"]]
+
+# Carry out permutation analysis with bp as the outcome
+# using the Spearman test with B=100 random permutations.
+# The score is the maxmean test statistic
+res = perm.path(expdat, y=pdat[["bp"]], local.test="spearman", 
+            global.test="maxmean", B=100, gset=gset, min.num=2, 
+            max.num=50, sort="score")
+
+# Output results for top pathways
+head(res[["res"]])
+
+# Output individual test statistics
+res[["stats"]]
+@
+\normalsize
+
+\subsection{Incorporating Annotation}
+This subsection describes the use of \texttt{permPATH} with real gene symbols that can be mapped to a gene pathway data base supported by Broad Institute. The user can also create pathways on the bases of files from the Molecular Signatures Database\cite{subramanian}.
+\tiny
+<<echo=TRUE>>=
+# Generate gene symbols
+set.seed(1234)
+library(permPATH)
+
+gnames = c("CCL13", "CCL19", "CCL2", "CCL3", "CCL3L1", "CCL4",    
+          "CCL5", "CCL7", "CCL8", "CCR1", "CCR2", "CCR3", "CCR5",
+          "CD14", "CD180", "CD2", "CD209", "CD40", "CD44", "CD80",
+          "CD86", "CD8A", "CDC42", "CEBPA", "CSF2", "CXCL1", "CXCL10",
+          "CXCR4", "EIF2AK2", "ELK1", "ERBB2", "FCAR", "HLAA", 
+          "HLADQA1", "HLADQB1", "HSPA1A", "IFIT3", "IFNA1", "IFNB1",
+          "IFNG", "IL10", "IL12A", "IL12B", "IL16", "IL1A", "IL1B",
+          "IL2", "IL6", "IL8", "INHBA", "IRF1", "IRF3", "ITGAM", 
+          "LTA", "LYN", "MAP3K7", "MAP4K4", "MAPK8", "MAPK8IP3", 
+          "MYD88", "NFKB1", "NFKBIA", "NFKBIL1", "NFRKB", "PELI1",    
+          "PTGS2", "REL", "RELA", "RIPK2", "SARM1", "STK4", "TAP2",    
+          "TGFB1", "TIRAP", "TLR1", "TLR10", "TLR2", "TLR3", "TLR4",
+          "TLR5", "TLR6", "TLR7", "TLR8", "TLR9", "TNF", "UBE2N", "B2M",
+          "RPL13A", "ACTB", "HGDC", "RTC1", "RTC2", "RTC3", "PPC1", "PPC2", "PPC3")
+
+# extract publicly available pre-defined pathways
+xx = readLines("http://software.broadinstitute.org/gsea/resources/msigdb/4.0/c2.cp.reactome.v4.0.symbols.gmt")
+pnames = as.character(sapply(xx, function(x){unlist(strsplit(x, "\t", fixed=TRUE))[1]}))
+anno = as.character(sapply(xx, function(x){unlist(strsplit(x, "\t", fixed=TRUE))[2]}))
+gset = lapply(xx, function(x){unlist(strsplit(x, "\t", fixed=TRUE))[-c(1,2)]})
+names(gset) = pnames
+gset = list(gset, pnames, anno)
+
+#intersect gene nsymbols with gene symbols from pathways
+ind = unlist(lapply(gset[[1]], function(x){ifelse(length(intersect(x,gnames))>1, TRUE, FALSE)}))
+gset[[1]] = gset[[1]][ind]
+gset[[2]] = gset[[2]][ind]
+gset[[3]] = gset[[3]][ind]
+gset[[1]] = lapply(gset[[1]], function(x){intersect(x, gnames)})
+names(gset[[1]]) = gset[[2]]
+names(gset[[3]]) = gset[[2]]
+
+#create gene expression data
+n = 220
+K = length(gnames)
+expdat = matrix(abs(rnorm(K*n)), K, n)
+rownames(expdat) = gnames
+patid = paste("id",1:n,sep="")
+colnames(expdat) = patid
+
+grp = rep(1:0,each=n/2)
+bp = abs(rnorm(n))
+pdat = data.frame(grp, bp)
+rm(grp, bp)
+
+# Carry out permutation analysis with grp as the outcome
+# using the two-sample Wilcoxon test with B=10000 random permutations.
+# The score is the maxmean test statistic
+res = perm.path(expdat, y=pdat[["grp"]], local.test="wilcoxon", 
+            global.test="maxmean", B=10^4, gset=gset[[1]], min.num=2, 
+            max.num=50, sort="score", anno=gset[[3]])
+
+# Output results for top pathways
+head(res[["res"]])
+
+# Carry out permutation analysis with bp as the outcome
+# using the Spearman test with B=10000 random permutations. 
+# The score is the maxmean test statistic
+res = perm.path(expdat, y=pdat[["grp"]], local.test="spearman", 
+            global.test="maxmean", B=10^4, gset=gset[[1]], min.num=2, 
+            max.num=50, sort="score", anno=gset[[3]])
+
+# Output results for top pathways
+head(res[["res"]])
+@
+\normalsize
+
+\section{Exporting Results to HTML File}
+The user has the option to export the results of \texttt{permPATH} to an HTML file via the function \texttt{permPATH2HTML}. This option is useful when pathways have large number of genes and allows for improved readability of the results.
+
+\tiny
+<<echo=TRUE>>=
+library(permPATH)
+set.seed(1234)
+n = 100
+K = 40
+grp = rep(1:0,each=n/2)
+bp = rnorm(n)
+
+pdat = data.frame(grp, bp)
+rm(grp, bp)
+expdat = matrix(rnorm(K*n),K,n)
+
+## Assign marker names g1,...,gK to the expression data set and
+## patient ids id1,...,idn to the expression and phenotype data
+gnames = paste("g",1:K,sep="")
+rownames(expdat) = gnames
+patid = paste("id",1:n,sep="")
+rownames(pdat) = patid
+colnames(expdat) = patid
+
+#Group the K genes into M pathways of sizes n1,...,nM
+M = 5
+p = runif(M)
+p = p/sum(p)
+nM = rmultinom(1, size=K, prob=p)
+gset = lapply(nM, function(x){gnames[sample(x)]})
+names(gset) = paste("pathway",1:M,sep="")
+
+## Carry out permutation analysis with grp as the outcome
+## using the two-sample Wilcoxon with B=100 random permutations
+res = perm.path(expdat, y=pdat[["grp"]], local.test="wilcoxon", global.test="maxmean", B=100, gset=gset, 
+           min.num=2, max.num=50, sort="score")
+
+# create an html file
+#epermPATH2HTML(rstab, dir="/dir/", fname="tophits")
+
+sessionInfo()
+@
+\normalsize
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{permPATHbibl}
+
+\end{document}

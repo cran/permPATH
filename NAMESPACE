@@ -1,0 +1,5 @@
+useDynLib(permPATH)
+exportPattern("^[[:alpha:]]+")
+import(R2HTML)
+import(xtable)
+importFrom("stats", "p.adjust")
