@@ -105,12 +105,12 @@ class ranker
 };
 
 template <class T, class S>
-inline void rank(const vector<T>& v, vector<S>& w,
+inline void rankk(const vector<T>& v, vector<S>& w,
           const string& method = "average")
   { ranker<T, lt<T> > r(v); r.get_ranks(w, method); }
 
 template <class T, class S>
-inline void rank(const T* d, uint size, vector<S>& w,
+inline void rankk(const T* d, uint size, vector<S>& w,
           const string& method = "average")
   { ranker<T, lt<T> > r(d, size); r.get_ranks(w, method); }
 

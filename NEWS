@@ -1,0 +1,13 @@
+permPATH changes
+=================
+
+changes in permPATH 0.4
+
+- fixed overloading ambiguity in sqrt
+
+- fixed ambiguous reference to rank
+
+changes in permPATH 0.3
+
+- removed dependancy on Rmath.h
+

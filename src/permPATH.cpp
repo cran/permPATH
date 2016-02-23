@@ -1,11 +1,11 @@
 // Copyright (C) 2016 Ivo D. Shterev
 // Licensed under GNU GPL 3 or later
 
-#include <iostream>
-#include <string>
+//#include <string>
 
 #include <R.h>
-#include <Rmath.h>
+//#include <Rmath.h>
+//#include <math.h>
 
 #include "ranker.h"
 
@@ -238,6 +238,7 @@ void JT_test_norm(const double *X, const int *Y, const int C, const int K, const
 void permpairw(const double *dif, const double *rdif, const int *n, const int *k, const int *b, double *T) // Wilcoxon test
 { 
   int N = *n;
+  float Nf = N;
   int K = *k;
   int B = *b;
 
@@ -255,7 +256,7 @@ void permpairw(const double *dif, const double *rdif, const int *n, const int *k
 
   // normalize test statistics
   double m = N*(N+1)/4;
-  double s = sqrt(N*(N+1)*(2*N+1)/24);
+  double s = sqrt(Nf*(Nf+1.0)*(2.0*Nf+1.0)/24.0);
  
   for (int k = 0; k < K; k++){
     double t = 0.0;
@@ -272,7 +273,6 @@ void permpairw(const double *dif, const double *rdif, const int *n, const int *k
   int *yi;
   yi = (int *)malloc(N*sizeof(int));
   for (int b = 1; b <= B; b++){
-//std::cout<<b<<"\n";
     // update yi
     for (int n = 0; n < N; n++){
       if(unif_rand() < 0.5)
@@ -312,6 +312,7 @@ void permpairt(const double *dif, const int *n, const int *k, const int *b, doub
   int N = *n;
   int K = *k;
   int B = *b;
+  float Nf = N;
 
   // compute test statistics
   double *mean;
@@ -333,7 +334,7 @@ void permpairt(const double *dif, const int *n, const int *k, const int *b, doub
   }
 
   for (int k = 0; k < K; k++)
-    T[k] = sqrt(N)*mean[k]/sd[k];
+    T[k] = sqrt(Nf)*mean[k]/sd[k];
  
   // compute permuted replicates
   // random number seed
@@ -342,7 +343,6 @@ void permpairt(const double *dif, const int *n, const int *k, const int *b, doub
   int *yi;
   yi = (int *)malloc(N*sizeof(int));
   for (int b = 1; b <= B; b++){
-//std::cout<<b<<"\n";
     // update yi
     for (int n = 0; n < N; n++){
       if(unif_rand() < 0.5)
@@ -366,7 +366,7 @@ void permpairt(const double *dif, const int *n, const int *k, const int *b, doub
     }
 
     for (int k = 0; k < K; k++)
-      T[b*K+k] = sqrt(N)*mean[k]/sd[k];
+      T[b*K+k] = sqrt(Nf)*mean[k]/sd[k];
   }
 
   // random seed
@@ -381,6 +381,7 @@ void permpairt(const double *dif, const int *n, const int *k, const int *b, doub
 void permpairw_path(const double *dif, const double *rdif, const int *probeindex, const int *num_path, const int *PATHS, const int *n, const int *k, const int *b, double *score_T) // Wilcoxon test
 { 
   int N = *n;
+  float Nf = N;
   int K = *k;
   int B = *b;
   int paths = *PATHS;
@@ -399,7 +400,7 @@ void permpairw_path(const double *dif, const double *rdif, const int *probeindex
 
   // normalize test statistics
   double m = N*(N+1)/4;
-  double s = sqrt(N*(N+1)*(2*N+1)/24);
+  double s = sqrt(Nf*(Nf+1.0)*(2*Nf+1.0)/24.0);
  
   for (int k = 0; k < K; k++){
     double t = 0.0;
@@ -416,7 +417,7 @@ void permpairw_path(const double *dif, const double *rdif, const int *probeindex
     a[k] = fabs(score_T[(B+1)*paths+k]);
     
   vector<double> ranks;
-  rank(a, ranks, method);
+  rankk(a, ranks, method);
 
   int c = 0;
   for (int p = 0; p < paths; p++){
@@ -435,7 +436,6 @@ void permpairw_path(const double *dif, const double *rdif, const int *probeindex
   int *yi;
   yi = (int *)malloc(N*sizeof(int));
   for (int b = 1; b <= B; b++){
-//std::cout<<b<<"\n";
     // update yi
     for (int n = 0; n < N; n++){
       if(unif_rand() < 0.5)
@@ -462,7 +462,7 @@ void permpairw_path(const double *dif, const double *rdif, const int *probeindex
     }
 
     vector<double> ranks;
-    rank(a, ranks, method);
+    rankk(a, ranks, method);
 
     int c = 0;
     for (int p = 0; p < paths; p++){
@@ -1307,6 +1307,7 @@ void perm_path_jt(const double *X, int *y, const int *c, const int *probeindex, 
 void permpairt_path(const double *dif, const int *probeindex, const int *num_path, const int *PATHS, const int *n, const int *k, const int *b, double *score_T) // Wilcoxon test
 { 
   int N = *n;
+  float Nf = N;
   int K = *k;
   int B = *b;
   int paths = *PATHS;
@@ -1331,7 +1332,7 @@ void permpairt_path(const double *dif, const int *probeindex, const int *num_pat
   }
 
   for (int k = 0; k < K; k++)
-    score_T[(B+1)*paths+k] = sqrt(N)*mean[k]/sd[k];
+    score_T[(B+1)*paths+k] = sqrt(Nf)*mean[k]/sd[k];
 
   // compute wilcoxon test statistic of probes in each set
   string method = "average";  // Can also be "min" or "max" or "default"
@@ -1340,7 +1341,7 @@ void permpairt_path(const double *dif, const int *probeindex, const int *num_pat
     a[k] = fabs(score_T[(B+1)*paths+k]);
     
   vector<double> ranks;
-  rank(a, ranks, method);
+  rankk(a, ranks, method);
 
   int c = 0;
   for (int p = 0; p < paths; p++){
@@ -1359,7 +1360,6 @@ void permpairt_path(const double *dif, const int *probeindex, const int *num_pat
   int *yi;
   yi = (int *)malloc(N*sizeof(int));
   for (int b = 1; b <= B; b++){
-//std::cout<<b<<"\n";
     // update yi
     for (int n = 0; n < N; n++){
       if(unif_rand() < 0.5)
@@ -1383,10 +1383,10 @@ void permpairt_path(const double *dif, const int *probeindex, const int *num_pat
     }
 
     for (int k = 0; k < K; k++)
-      a[k] = fabs(sqrt(N)*mean[k]/sd[k]);
+      a[k] = fabs(sqrt(Nf)*mean[k]/sd[k]);
 
     vector<double> ranks;
-    rank(a, ranks, method);
+    rankk(a, ranks, method);
 
     int c = 0;
     for (int p = 0; p < paths; p++){
@@ -1411,6 +1411,7 @@ void permpairt_path(const double *dif, const int *probeindex, const int *num_pat
 void permpair_maxmean_path(const double *dif, const int *probeindex, const int *num_path, const int *PATHS, const int *n, const int *k, const int *b, double *score_T) // t-test
 { 
   int N = *n;
+  float Nf = N;
   int K = *k;
   int B = *b;
   int paths = *PATHS;
@@ -1435,7 +1436,7 @@ void permpair_maxmean_path(const double *dif, const int *probeindex, const int *
   }
 
   for (int k = 0; k < K; k++)
-    score_T[(B+1)*paths+k] = sqrt(N)*mean[k]/sd[k];
+    score_T[(B+1)*paths+k] = sqrt(Nf)*mean[k]/sd[k];
 
   // compute maxmean score for each set
   vector<double> a(K);
@@ -1481,7 +1482,6 @@ void permpair_maxmean_path(const double *dif, const int *probeindex, const int *
   int *yi;
   yi = (int *)malloc(N*sizeof(int));
   for (int b = 1; b <= B; b++){
-//std::cout<<b<<"\n";
     // update yi
     for (int n = 0; n < N; n++){
       if(unif_rand() < 0.5)
@@ -1505,7 +1505,7 @@ void permpair_maxmean_path(const double *dif, const int *probeindex, const int *
     }
 
     for (int k = 0; k < K; k++)
-      a[k] = sqrt(N)*mean[k]/sd[k];
+      a[k] = sqrt(Nf)*mean[k]/sd[k];
 
     int c = 0;
     for (int p = 0; p < paths; p++){
