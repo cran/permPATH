@@ -1,6 +1,12 @@
 permPATH changes
 =================
 
+changes in permPATH 0.6
+
+- vignette uses local copy of "c2.cp.reactome.v4.0.symbols.gmt"
+
+- minor help file fixes
+
 changes in permPATH 0.4
 
 - fixed overloading ambiguity in sqrt

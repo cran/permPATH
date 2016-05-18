@@ -78,8 +78,8 @@ gnames = c("CCL13", "CCL19", "CCL2", "CCL3", "CCL3L1", "CCL4",
           "TLR5", "TLR6", "TLR7", "TLR8", "TLR9", "TNF", "UBE2N", "B2M",
           "RPL13A", "ACTB", "HGDC", "RTC1", "RTC2", "RTC3", "PPC1", "PPC2", "PPC3")
 
-# extract publicly available pre-defined pathways
-xx = readLines("http://software.broadinstitute.org/gsea/resources/msigdb/4.0/c2.cp.reactome.v4.0.symbols.gmt")
+# extract pathways available at "http://software.broadinstitute.org/gsea/resources/msigdb/4.0/c2.cp.reactome.v4.0.symbols.gmt"
+xx = readLines("c2.cp.reactome.v4.0.symbols.gmt")
 pnames = as.character(sapply(xx, function(x){unlist(strsplit(x, "\t", fixed=TRUE))[1]}))
 anno = as.character(sapply(xx, function(x){unlist(strsplit(x, "\t", fixed=TRUE))[2]}))
 gset = lapply(xx, function(x){unlist(strsplit(x, "\t", fixed=TRUE))[-c(1,2)]})

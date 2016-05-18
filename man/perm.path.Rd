@@ -2,10 +2,10 @@
 \alias{perm.path}
 
 \title{
- title
+ Perform Permutation Based Pathway Analysis
 }
 \description{
- description
+ This is the package main function.
 }
 \usage{
 perm.path(expr, y, local.test, global.test="wilcoxon", B, gset, min.num=2, max.num, 
@@ -74,7 +74,7 @@ where K is the number of pathways. The first column contains the unpermuted scor
 the remaining \eqn{B} columns contain the scores computed after each permutation.}
 }
 \references{
-   B. Bradley, R. Tibshirani (2007) 
+   B. Efron, R. Tibshirani (2007) 
 On Testing the Significance of Sets of Genes. \emph{The Annals of Applied Statistics}. 
 \bold{Vol. 1}, No 1, 107--129.
 

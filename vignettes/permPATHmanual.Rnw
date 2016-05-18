@@ -14,7 +14,7 @@
  \oddsidemargin=0in \evensidemargin=0in
 
 
-\title{\texttt{permPATH}: Permutation-Based Gene Expression Pathway Analyses}
+\title{\texttt{permPATH}: Permutation Based Gene Expression Pathway Analysis}
 
 \author{Ivo D. Shterev \thanks{i.shterev@duke.edu} \and Kouros Owzar \and Gregory D. Sempowski}
 
@@ -24,7 +24,7 @@
 \maketitle 
 
 \section{Introduction}
-This vignette describes the first version of the R extension package \texttt{permPATH} for performing permutation-based gene expression pathway analyses. The package works by computing a score for each group (pathway) of genes. The score is a function of the individual gene test statistics involved in the pathway. Currently, the package computes as the score the mean of the test statistics, the mean of the absolute values of the test statistics and the so called maxmean score \cite{efron}. The individual test statistics that the package currently supports are the {\it t}-test statistic, the Wilcoxon, Pearson, the Spearman and the Jonckheere-Terpstra (JT) test statistics.
+This vignette describes the R extension package \texttt{permPATH} for performing permutation based gene expression pathway analysis. The package works by computing a score for each group (pathway) of genes. The score is a function of the individual gene test statistics involved in the pathway. Currently, the package computes as the score the mean of the test statistics, the mean of the absolute values of the test statistics and the so called maxmean score \cite{efron}. The individual test statistics that the package currently supports are the {\it t}-test statistic, the Wilcoxon, Pearson, the Spearman and the Jonckheere-Terpstra (JT) test statistics.
 
 \section{Adjusting for Multiple Comparisons}
 In addition to computing individual test statistics and scores, the package also computes raw permutation p-values, false discovery (FDR) adjusted p-values, Bonferroni corrected p-values, as well as family wise error (FWER) adjusted two sided permutation p-values.
@@ -141,8 +141,8 @@ gnames = c("CCL13", "CCL19", "CCL2", "CCL3", "CCL3L1", "CCL4",
           "TLR5", "TLR6", "TLR7", "TLR8", "TLR9", "TNF", "UBE2N", "B2M",
           "RPL13A", "ACTB", "HGDC", "RTC1", "RTC2", "RTC3", "PPC1", "PPC2", "PPC3")
 
-# extract publicly available pre-defined pathways
-xx = readLines("http://software.broadinstitute.org/gsea/resources/msigdb/4.0/c2.cp.reactome.v4.0.symbols.gmt")
+# extract pathways available at "http://software.broadinstitute.org/gsea/resources/msigdb/4.0/c2.cp.reactome.v4.0.symbols.gmt"
+xx = readLines("c2.cp.reactome.v4.0.symbols.gmt")
 pnames = as.character(sapply(xx, function(x){unlist(strsplit(x, "\t", fixed=TRUE))[1]}))
 anno = as.character(sapply(xx, function(x){unlist(strsplit(x, "\t", fixed=TRUE))[2]}))
 gset = lapply(xx, function(x){unlist(strsplit(x, "\t", fixed=TRUE))[-c(1,2)]})

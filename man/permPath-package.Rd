@@ -3,35 +3,35 @@
 \alias{permPath}
 \docType{package}
 \title{
-What the package does (short line)
- title
+Permutation Based Gene Expression Pathway Analysis.
 }
 \description{
-More about what it does (maybe more than one line)
+Can be used to carry out permutation based gene expression pathway analysis. This work was supported by a National Institute of Allergy and Infectious Disease/National Institutes of Health contract (No. HHSN272200900059C).
 }
 \details{
 \tabular{ll}{
 Package: \tab permPath\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2015-10-05\cr
-License: \tab What license is it under?\cr
+Version: \tab 0.6\cr
+Date: \tab 2016-05-13\cr
+License: \tab GPL-3\cr
 }
- license
 }
 \author{
-Author: Ivo D. Shterev <i.shterev@duke.edu>
+  I. D. Shterev, K. Owzar and G. D. Sempowski
 
-Maintainer: Ivo D. Shterev <i.shterev@duke.edu>
+Maintainer: I. D. Shterev <i.shterev@duke.edu>
 }
 \references{
- literature
-}
+   B. Efron, R. Tibshirani (2007) 
+   On Testing the Significance of Sets of Genes. \emph{The Annals 
+   of Applied Statistics}. \bold{Vol. 1}, No 1, 107--129.
 
-\keyword{ package }
-\seealso{
- seealso
-}
-\examples{
- example
+   A. Subramanian, P. Tamayo, V. K. Mootha, S. Mukherjee, 
+   B. L. Ebert, M. A. Gillette, A. Paulovich, S. L. Pomeroy, 
+   T. R. Golub, E. S. Lander and J. P. Mesirov (2005), 
+   Gene Set Enrichment Analysis: A knowledge-based Approach 
+   for Interpreting Genome-Wide Expression Profiles. 
+   \emph{Proc. Natl. Acad. Sci. USA}. \bold{Vol. 102}, 
+   No 43, 15545--15550.
 }
