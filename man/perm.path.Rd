@@ -25,7 +25,7 @@ imputeval=NULL, transfun=function(x){x}, sort="pval", anno=NULL)
     test, \eqn{Pearson}, \eqn{Spearman} and \eqn{JT} test.
 }
   \item{global.test}{
-    Global test statictic, used to compute the score. Currenlt possible choices are \eqn{mean},
+    Global test statictic, used to compute the score. Current possible choices are \eqn{mean},
     \eqn{meanabs} (mean of absolute values) and \eqn{maxmean}.
 }
   \item{B}{

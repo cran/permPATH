@@ -1,11 +1,6 @@
 // Copyright (C) 2016 Ivo D. Shterev
-// Licensed under GNU GPL 3 or later
-
-//#include <string>
 
 #include <R.h>
-//#include <Rmath.h>
-//#include <math.h>
 
 #include "ranker.h"
 
@@ -122,12 +117,10 @@ void SpearmanStat(const double *Y, const double *X, double *T, const int N, cons
 
 void SpearmanStatNew(const double *Y, const double *X, double *T, const int N, const int K)
 {
-  double stat;
   for (int k = 0; k < K; k++){
     // compute start of X segment
     int iter = k*N;
 
-    stat = 0.0;
     double meanx = 0.0;
     double meany = 0.0;
     for (int n = 0; n < N; n++){

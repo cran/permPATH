@@ -30,8 +30,6 @@ permPATH2HTML(dat, dir, fname, title=NULL, bgcolor="#BBBBEE")
 }
 
 \examples{
- set.seed(1234)
-
 ## Generate toy phenotype and gene expression data sets
 ## This example consists of 40 genes grouped into 5 pathways and 100 patients
 ## grp is a binary trait (e.g., case vs control)
