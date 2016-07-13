@@ -1,4 +1,4 @@
-568e9840037be0ed9fbcc7f15a605c09 *DESCRIPTION
+93b734328ad77e341386706895cea46d *DESCRIPTION
 2eec4d36776b9d9b828eb720e82e74f9 *NAMESPACE
 33d6b65099cb238641b81257f6bebde5 *NEWS
 333135b873cb6f1a8cbd4632e5e94f5b *R/perm.path.R
@@ -7,11 +7,11 @@ a9fddb8465761ec445ecf1c34a31e48a *R/permPath-internal.R
 569f5eff7f7b04b342b99beb56a1f142 *build/vignette.rds
 f6a42300bae77ceca303460c6d83003f *inst/doc/permPATHmanual.R
 d35873ef94ede466c7205aab1a229869 *inst/doc/permPATHmanual.Rnw
-1c0a06c3f031645bdd2831f5874d5264 *inst/doc/permPATHmanual.pdf
+bd900cd39c3545b36b58e72cf0d02b15 *inst/doc/permPATHmanual.pdf
 14340adc53f88c5fa0da141932b9b198 *man/perm.path.Rd
 29253a4ff2c8743dc392026e1af785c5 *man/permPATH2HTML.Rd
 7a62fdcff008a2fda23b05082feb6d22 *man/permPath-package.Rd
-7e40043a1cff01baef11a508f626028c *src/permPATH.cpp
+924b454adbecacb94dff567ea8bf159e *src/permPATH.cpp
 b9514dbe8493c4494a821fa14c87809a *src/ranker.h
 90cd94d3e4c6fef9622b66cd75429e09 *vignettes/c2.cp.reactome.v4.0.symbols.gmt
 e8ef21fd469269dd808142c6d81f4114 *vignettes/permPATHbibl.bib
