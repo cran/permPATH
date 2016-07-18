@@ -10,8 +10,9 @@ n = 100
 K = 40
 grp = rep(1:0,each=n/2)
 bp = rnorm(n)
+g = rep(1:(n/20), rep(20,n/20))
 
-pdat = data.frame(grp, bp)
+pdat = data.frame(grp, bp, g)
 rm(grp, bp)
 expdat = matrix(rnorm(K*n),K,n)
 
@@ -49,6 +50,19 @@ res[["stats"]]
 # using the Spearman test with B=100 random permutations.
 # The score is the maxmean test statistic
 res = perm.path(expdat, y=pdat[["bp"]], local.test="spearman", 
+            global.test="maxmean", B=100, gset=gset, min.num=2, 
+            max.num=50, sort="score")
+
+# Output results for top pathways
+head(res[["res"]])
+
+# Output individual test statistics
+res[["stats"]]
+
+# Carry out permutation analysis with g as the outcome
+# using the JT test with B=100 random permutations.
+# The score is the maxmean test statistic
+res = perm.path(expdat, y=pdat[["g"]], local.test="jt", 
             global.test="maxmean", B=100, gset=gset, min.num=2, 
             max.num=50, sort="score")
 
@@ -105,7 +119,9 @@ colnames(expdat) = patid
 
 grp = rep(1:0,each=n/2)
 bp = abs(rnorm(n))
-pdat = data.frame(grp, bp)
+g = rep(1:(n/20), rep(20,n/20))
+
+pdat = data.frame(grp, bp, g)
 rm(grp, bp)
 
 # Carry out permutation analysis with grp as the outcome
@@ -122,6 +138,26 @@ head(res[["res"]])
 # using the Spearman test with B=10000 random permutations. 
 # The score is the maxmean test statistic
 res = perm.path(expdat, y=pdat[["grp"]], local.test="spearman", 
+            global.test="maxmean", B=10^4, gset=gset[[1]], min.num=2, 
+            max.num=50, sort="score", anno=gset[[3]])
+
+# Output results for top pathways
+head(res[["res"]])
+
+# Carry out permutation analysis with grp as the outcome
+# using the two-sample Wilcoxon test with B=10000 random permutations.
+# The score is the maxmean test statistic
+res = perm.path(expdat, y=pdat[["grp"]], local.test="wilcoxon", 
+            global.test="maxmean", B=10^4, gset=gset[[1]], min.num=2, 
+            max.num=50, sort="score", anno=gset[[3]])
+
+# Output results for top pathways
+head(res[["res"]])
+
+# Carry out permutation analysis with g as the outcome
+# using the JT test with B=10000 random permutations. 
+# The score is the maxmean test statistic
+res = perm.path(expdat, y=pdat[["g"]], local.test="jt", 
             global.test="maxmean", B=10^4, gset=gset[[1]], min.num=2, 
             max.num=50, sort="score", anno=gset[[3]])
 

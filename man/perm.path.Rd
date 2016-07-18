@@ -91,13 +91,15 @@ set.seed(1234)
 ## This example consists of 40 genes grouped into 5 pathways and 100 patients
 ## grp is a binary trait (e.g., case vs control)
 ## bp is a continuous trait (e.g., blood pressure)
+## g is a group indicator
 
 n = 100
 K = 40
 grp = rep(1:0,each=n/2)
 bp = rnorm(n)
+g = rep(1:(n/20), rep(20,n/20))
 
-pdat = data.frame(grp, bp)
+pdat = data.frame(grp, bp, g)
 rm(grp, bp)
 expdat = matrix(rnorm(K*n),K,n)
 
@@ -121,8 +123,9 @@ names(gset) = paste("pathway",1:M,sep="")
 ## using the two-sample Wilcoxon with B=100 random permutations
 perm.path(expdat, y=pdat[["grp"]], local.test="wilcoxon", global.test="maxmean", B=100, 
 gset=gset, min.num=2, max.num=50, sort="score")
+
+## Carry out permutation analysis with g as the outcome
+## using the JT test with B=100 random permutations
+perm.path(expdat, y=pdat[["g"]], local.test="jt", global.test="maxmean", B=100, 
+gset=gset, min.num=2, max.num=50, sort="score")
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

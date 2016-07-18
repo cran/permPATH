@@ -213,7 +213,7 @@ void JT_test_norm(const double *X, const int *Y, const int C, const int K, const
     }
 
     double stat = (valin + 0.5*valeq - *mean) / sqrt(*var);
-    if(std::isnan(stat))
+    if(ISNAN(stat))
       stat = NA_REAL;
     if (stat == 0.0){
       if (flag == 1)
