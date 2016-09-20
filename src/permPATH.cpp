@@ -1,8 +1,9 @@
 // Copyright (C) 2016 Ivo D. Shterev
 
 #include <R.h>
-
 #include "ranker.h"
+
+using namespace std;
 
 extern "C"{
 void YpermI(int *Y, const int N)
