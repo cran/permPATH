@@ -1,4 +1,4 @@
-useDynLib(permPATH)
+useDynLib(permPATH, .registration=TRUE)
 exportPattern("^[[:alpha:]]+")
 import(R2HTML)
 import(xtable)
