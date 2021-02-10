@@ -1,4 +1,4 @@
-## ----echo=TRUE-----------------------------------------------------------
+## ----echo=TRUE----------------------------------------------------------------
 # Generate toy phenotype and gene expression data sets
 # This example consists of 40 genes grouped into 5 pathways and 100 patients
 # grp is a binary trait (e.g., case vs control)
@@ -72,7 +72,7 @@ head(res[["res"]])
 # Output individual test statistics
 res[["stats"]]
 
-## ----echo=TRUE-----------------------------------------------------------
+## ----echo=TRUE----------------------------------------------------------------
 # Generate gene symbols
 set.seed(1234)
 library(permPATH)
@@ -164,7 +164,7 @@ res = perm.path(expdat, y=pdat[["g"]], local.test="jt",
 # Output results for top pathways
 head(res[["res"]])
 
-## ----echo=TRUE-----------------------------------------------------------
+## ----echo=TRUE----------------------------------------------------------------
 library(permPATH)
 set.seed(1234)
 n = 100
