@@ -1,7 +1,7 @@
 Package: permPATH
 Type: Package
 Title: Permutation Based Gene Expression Pathway Analysis
-Version: 1.2
+Version: 1.3
 Authors@R: c(person(c("Ivo", "D."), "Shterev", role = c("aut", "cre"),
               email = "i.shterev@gmail.com"),
               person("Kouros", "Owzar", role = "aut"),
@@ -14,11 +14,11 @@ Suggests: knitr
 License: GPL-3
 LazyLoad: yes
 NeedsCompilation: yes
-Packaged: 2021-02-09 21:02:06 UTC; is33
+Packaged: 2023-09-05 03:43:11 UTC; ivo
 Author: Ivo D. Shterev [aut, cre],
   Kouros Owzar [aut],
   Gregory D. Sempowski [aut],
   Kenneth Wilder [ctb, cph] (wrote original version of ranker.h)
 Maintainer: Ivo D. Shterev <i.shterev@gmail.com>
 Repository: CRAN
-Date/Publication: 2021-02-10 10:50:02 UTC
+Date/Publication: 2023-09-05 04:00:03 UTC

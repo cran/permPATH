@@ -1,5 +1,5 @@
 \name{permPath-package}
-\alias{permPath-package}
+\alias{permPATH-package}
 \alias{permPath}
 \docType{package}
 \title{
@@ -7,15 +7,6 @@ Permutation Based Gene Expression Pathway Analysis.
 }
 \description{
 Can be used to carry out permutation based gene expression pathway analysis. This work was supported by a National Institute of Allergy and Infectious Disease/National Institutes of Health contract (No. HHSN272200900059C).
-}
-\details{
-\tabular{ll}{
-Package: \tab permPath\cr
-Type: \tab Package\cr
-Version: \tab 0.6\cr
-Date: \tab 2016-05-13\cr
-License: \tab GPL-3\cr
-}
 }
 \author{
   I. D. Shterev, K. Owzar and G. D. Sempowski
